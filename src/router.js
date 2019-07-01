@@ -1,7 +1,8 @@
 const bodyParser = require("koa-bodyparser");
 const Router = require("koa-router");
 const reqShopify = require("./reqShopify");
-
+const view = require("koa-view");
+const koaSend = require("koa-send");
 const serve = require("koa-router-static");
 
 /**
@@ -10,6 +11,7 @@ const serve = require("koa-router-static");
 const router = new Router();
 
 router.use(bodyParser());
+router.use(view(__dirname + "/../views")); // Views with nunjucks
 
 const authentication = async (ctx, next) => {
   const phomasToken = ctx.get("X-Phomas-Access-Token");
@@ -43,42 +45,21 @@ router.post("/upload", authentication, ctx => {
   ctx.body = ctx.request.body;
 });
 
-// router.get(
-//   "/images/*",
-//   (ctx, next) => {
-//     console.log("images");
-//     next();
-//   },
-//   serve("../html/")
-// );
-// router.get(
-//   "/connect/*",
-//   (ctx, next) => {
-//     console.log("connect");
-//     next();
-//   },
-//   serve("../html/")
-// );
-
 /**
- * Static Html Router
+ * Image Route
  */
-// const htmlRouter = new Router({
-//   prefix: "/connect"
-// });
-// htmlRouter.get("/test", ctx => {
-//   ctx.body = "test";
-// });
-// const path = require("path").dirname("../html");
-// console.log(path);
-// Serve(`/html`, htmlRouter);
-
-// /**
-//  * Static Image Router
-//  */
-// const imageRouter = new Router({
-//   prefix: "/images"
-// });
-// imageRouter.use(serve("../images"));
+router.get("/images/(.*)", async ctx =>
+  koaSend(ctx, ctx.path, {
+    root: __dirname + "/../",
+    immutable: true,
+    maxAge: 60000
+  })
+);
+/**
+ * Views Route
+ */
+router.get("/connect", ctx => {
+  return ctx.render("index");
+});
 
 module.exports = [router];

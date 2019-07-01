@@ -5,9 +5,7 @@ const session = require("koa-session");
 
 const routers = require("./router");
 
-
 const Koa = require("koa");
-
 const app = new Koa();
 
 const { SHOPIFY_API_KEY, SHOPIFY_API_SECRET_KEY } = process.env;

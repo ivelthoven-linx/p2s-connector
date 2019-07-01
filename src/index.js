@@ -2,7 +2,7 @@ require("isomorphic-fetch");
 const { default: shopifyAuth } = require("@shopify/koa-shopify-auth");
 const { verifyRequest } = require("@shopify/koa-shopify-auth");
 const session = require("koa-session");
-
+const db = require("./db");
 const router = require("./router");
 
 const Koa = require("koa");
@@ -47,3 +47,5 @@ app
   });
 
 app.listen(3000);
+
+module.exports = app;

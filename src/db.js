@@ -1,20 +1,26 @@
 var MongoMock = require("mongomock");
 const db = new MongoMock({
-  instances: []
+  connections: [
+    {
+      shopifyUrl: "demo-phomas.myshopify.com",
+      shopifyToken: 2,
+      accessKey: 5,
+      secretKey: 28
+    }
+  ]
 });
 
-function createInstance(phomasUrl, phomasToken, shopifyUrl, shopifyToken) {
+function createConnection(shopifyUrl, shopifyToken, accessKey, secretKey) {
   var promise = new Promise(function(resolve, reject) {
-    db.collection("instances").insert(
+    db.collection("connections").insert(
       {
-        phomasUrl: phomasUrl,
-        phomasToken: phomasToken,
         shopifyUrl: shopifyUrl,
-        shopifyToken: shopifyToken
+        shopifyToken: shopifyToken,
+        accessKey: accessKey,
+        secretKey: secretKey
       },
       (err, res) => {
         if (err) {
-          console.log(err);
           reject(err);
         }
         resolve(res);
@@ -24,54 +30,55 @@ function createInstance(phomasUrl, phomasToken, shopifyUrl, shopifyToken) {
   return promise;
 }
 
-function readInstance(phomasToken) {
+function checkConnection(accessKey) {
   return new Promise(function(resolve, reject) {
-    db.collection("instances")
-      .find({ phomasToken: phomasToken })
+    db.collection("connections")
+      .find({ accessKey: accessKey })
       .toArray(function(err, res) {
         if (err) {
-          console.log(err);
           reject(err);
         }
-        console.log(res);
-        resolve(res);
+        if (res.length === 1) {
+          resolve(res[0]);
+        } else {
+          reject(new Error("wrong credentials"));
+        }
       });
   });
 }
 
-function updateInstance(phomasToken, shopifyUrl, shopifyToken) {
-  return new Promise(function(resolve, reject) {
-    db.collection("instances").update(
-      { phomasToken: phomasToken },
-      { $set: { shopifyUrl: shopifyUrl, shopifyToken: shopifyToken } },
-      (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      }
-    );
-  });
-}
+// function updateConnection(shopifyToken) {
+//   return new Promise(function(resolve, reject) {
+//     db.collection("connections").update(
+//       { shopifyToken: shopifyToken },
+//       { $set: { shopifyUrl: shopifyUrl, shopifyToken: shopifyToken } },
+//       (err, res) => {
+//         if (err) {
+//           reject(err);
+//         }
+//         resolve(res);
+//       }
+//     );
+//   });
+// }
 
-function deleteInstance(phomasToken) {
-  return new Promise(function(resolve, reject) {
-    db.collection("instances").remove(
-      { phomasToken: phomasToken },
-      (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      }
-    );
-  });
-}
+// function deleteConnection(shopifyToken) {
+//   return new Promise(function(resolve, reject) {
+//     db.collection("connections").remove(
+//       { phomasToken: phomasToken },
+//       (err, res) => {
+//         if (err) {
+//           reject(err);
+//         }
+//         resolve(res);
+//       }
+//     );
+//   });
+// }
 
 module.exports = {
-  db,
-  createInstance,
-  readInstance,
-  updateInstance,
-  deleteInstance
+  createConnection,
+  checkConnection //,
+  // updateConnection,
+  // deleteConnection
 };

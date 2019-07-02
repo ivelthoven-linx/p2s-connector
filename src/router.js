@@ -3,8 +3,10 @@ const Router = require("koa-router");
 const reqShopify = require("./reqShopify");
 const view = require("koa-view");
 const koaSend = require("koa-send");
-const serve = require("koa-router-static");
-
+const authentication = require("./authentication").authentication;
+// db.checkConnection(5, 20).then(res => {
+//   console.log(res);
+// });
 /**
  * General Router
  */
@@ -12,16 +14,6 @@ const router = new Router();
 
 router.use(bodyParser());
 router.use(view(__dirname + "/../views")); // Views with nunjucks
-
-const authentication = async (ctx, next) => {
-  const phomasToken = ctx.get("X-Phomas-Access-Token");
-  if (phomasToken) {
-    ctx.shopify = { url: "https://demo-phomas.myshopify.com", token: 2 };
-    await next();
-  } else {
-    ctx.body = "invalid token or account not linked";
-  }
-};
 
 router.get("/", ctx => {
   ctx.body = "P2S Connector";

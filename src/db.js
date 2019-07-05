@@ -1,51 +1,15 @@
-var MongoMock = require("mongomock");
-const db = new MongoMock({
+const MongoMock = require("mongomock");
+
+module.exports = new MongoMock({
   connections: [
     {
-      shopifyUrl: "demo-phomas.myshopify.com",
+      shopifyUrl: "https://demo-phomas.myshopify.com",
       shopifyToken: 2,
-      accessKey: 5,
-      secretKey: 28
+      accessKey: "key",
+      secretKey: "secret"
     }
   ]
 });
-
-function createConnection(shopifyUrl, shopifyToken, accessKey, secretKey) {
-  var promise = new Promise(function(resolve, reject) {
-    db.collection("connections").insert(
-      {
-        shopifyUrl: shopifyUrl,
-        shopifyToken: shopifyToken,
-        accessKey: accessKey,
-        secretKey: secretKey
-      },
-      (err, res) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(res);
-      }
-    );
-  });
-  return promise;
-}
-
-function checkConnection(accessKey) {
-  return new Promise(function(resolve, reject) {
-    db.collection("connections")
-      .find({ accessKey: accessKey })
-      .toArray(function(err, res) {
-        if (err) {
-          reject(err);
-        }
-        if (res.length === 1) {
-          resolve(res[0]);
-        } else {
-          reject(new Error("wrong credentials"));
-        }
-      });
-  });
-}
 
 // function updateConnection(shopifyToken) {
 //   return new Promise(function(resolve, reject) {
@@ -76,9 +40,9 @@ function checkConnection(accessKey) {
 //   });
 // }
 
-module.exports = {
-  createConnection,
-  checkConnection //,
-  // updateConnection,
-  // deleteConnection
-};
+// module.exports = {
+//   createConnection,
+//   checkConnection //,
+//   // updateConnection,
+//   // deleteConnection
+// };

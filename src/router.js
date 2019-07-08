@@ -6,6 +6,7 @@ const { verifyRequest } = require("@shopify/koa-shopify-auth");
 const authentication = require("./authentication").authentication;
 const db = require("./dbFunctions");
 const reqShopify = require("./reqShopify");
+var Cookies = require("cookies");
 
 /**
  * General Router
@@ -83,4 +84,16 @@ router.get("/connect", ctx => {
   return ctx.render("index");
 });
 
+// router.post("/connect", ctx => {
+//   const ShopifyURL = ctx.request.body;
+//   // ctx.cookies.set("ShopifyURL", ctx.request, { ShopifyURL: ShopifyURL });
+//   // ctx.cookies.get("ShopifyURL");
+//   console.log(ShopifyURL);
+//   const cookies = new Cookies(ctx.request, ctx.res, {
+//     ShopifyURL: ctx.cookies
+//   });
+//   cookies.set("ShopifyURL", ShopifyURL);
+//   console.log(cookies.get("ShopifyURL"));
+//   return ShopifyURL;
+// });
 module.exports = [router];

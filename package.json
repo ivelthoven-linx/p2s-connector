@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@shopify/koa-shopify-auth": "3.1.29",
+    "cookies": "0.7.3",
     "crypto-js": "3.1.9-1",
     "graphql-request": "1.8.2",
     "isomorphic-fetch": "2.2.1",

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const tmp = require("tmp-promise");
 
-const PUBLIC_FOLDER = "./public/";
+const PUBLIC_FOLDER = "../images/";
 
 exports.writeImage = (filename, data) => {
   // get's file extension

@@ -26,6 +26,10 @@ router.get(
       .checkConnectionShopify(accessToken)
       .then(data => {
         ctx.body = data.accessKey + "\n" + data.secretKey;
+        ctx.render("APIcredentials", {
+          APIkey: data.accessKey,
+          secretKey: data.secretKey
+        });
       })
       .catch(err => {
         console.error(err);
@@ -84,16 +88,4 @@ router.get("/connect", ctx => {
   return ctx.render("index");
 });
 
-// router.post("/connect", ctx => {
-//   const ShopifyURL = ctx.request.body;
-//   // ctx.cookies.set("ShopifyURL", ctx.request, { ShopifyURL: ShopifyURL });
-//   // ctx.cookies.get("ShopifyURL");
-//   console.log(ShopifyURL);
-//   const cookies = new Cookies(ctx.request, ctx.res, {
-//     ShopifyURL: ctx.cookies
-//   });
-//   cookies.set("ShopifyURL", ShopifyURL);
-//   console.log(cookies.get("ShopifyURL"));
-//   return ShopifyURL;
-// });
 module.exports = [router];

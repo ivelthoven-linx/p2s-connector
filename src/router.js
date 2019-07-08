@@ -28,10 +28,6 @@ router.get(
       .checkConnectionShopify(accessToken)
       .then(data => {
         ctx.body = data.accessKey + "\n" + data.secretKey;
-        ctx.render("APIcredentials", {
-          APIkey: data.accessKey,
-          secretKey: data.secretKey
-        });
       })
       .catch(err => {
         console.error(err);
@@ -95,30 +91,31 @@ router.get("/connect", ctx => {
 });
 
 router.post("/connect", async ctx => {
+  console.log(ctx.request.origin);
   console.log(ctx.request.body);
   const shop = ctx.request.body.shop;
+  const hostOrigin = ctx.request.origin;
 
   const data = JSON.stringify({
     message: "Shopify.API.remoteRedirect",
     data: {
-      location: `https://6wsfv.sse.codesandbox.io/auth/enable_cookies?shop=${shop}`
+      location: `${hostOrigin}/auth/enable_cookies?shop=${shop}`
     }
   });
   return request
     .post(`https://${shop}`, data)
     .then(() => {
-      ctx.redirect(`https://6wsfv.sse.codesandbox.io/auth?shop=${shop}`);
+      ctx.redirect(`${hostOrigin}/auth?shop=${shop}`);
     })
     .catch(err => {
       console.error(err.name);
       console.error(err.statusCode);
       console.log("\n\n\n");
-      console.error(err);
       // if err is request error (doesn't exsist) than redirect back else go to auth
       if (err.name === "RequestError" && !err.statusCode) {
         return ctx.render("index", { err: "Invalid shopify url" });
       } else {
-        ctx.redirect(`https://6wsfv.sse.codesandbox.io/auth?shop=${shop}`);
+        ctx.redirect(`${hostOrigin}/auth?shop=${shop}`);
       }
     });
   // return request.post(`https://${shop}`, data, (err, response, body) => {
@@ -144,5 +141,4 @@ router.post("/connect", async ctx => {
 //   console.log(cookies.get("ShopifyURL"));
 //   return ShopifyURL;
 // });
-
 module.exports = [router];

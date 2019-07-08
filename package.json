@@ -8,7 +8,6 @@
   },
   "dependencies": {
     "@shopify/koa-shopify-auth": "3.1.29",
-    "cookies": "0.7.3",
     "crypto-js": "3.1.9-1",
     "graphql-request": "1.8.2",
     "isomorphic-fetch": "2.2.1",
@@ -19,7 +18,10 @@
     "koa-session": "5.12.0",
     "koa-view": "2.1.3",
     "mongomock": "0.1.2",
-    "nanoid": "2.0.3"
+    "nanoid": "2.0.3",
+    "request": "2.88.0",
+    "request-promise-native": "1.0.7",
+    "tmp-promise": "2.0.2"
   },
   "devDependencies": {
     "nodemon": "1.18.4"

@@ -273,6 +273,18 @@
         color: #0d0d0d;
       }
 
+      .errMessage {
+        position: fixed;
+        z-index: 100;
+        margin-top: 10px;
+        background-color: rgba(172, 3, 3, 0.8);
+        width: 80%;
+        margin-left: 10%;
+        text-align: center;
+        padding: 5px;
+        color: white;
+      }
+
       .underlineHover:hover:after {
         width: 100%;
       }
@@ -293,6 +305,9 @@
     </style>
   </head>
   <body>
+    {% if err %}
+    <div class="errMessage fadeIn">{{err}}</div>
+    {% endif %}
     <link
       href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
       rel="stylesheet"
@@ -318,14 +333,13 @@
         </div>
 
         <!-- Login Form -->
-        <form>
+        <form method="POST">
           <input
             type="text"
-            id="shopifyURL"
+            id="shop"
             class="fadeIn second"
-            name="shopifyURL"
+            name="shop"
             placeholder="Shopify URL"
-            value="10"
           />
           <input
             id="submit"

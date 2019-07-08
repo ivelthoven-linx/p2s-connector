@@ -28,6 +28,10 @@ router.get(
       .checkConnectionShopify(accessToken)
       .then(data => {
         ctx.body = data.accessKey + "\n" + data.secretKey;
+        ctx.render("APIcredentials", {
+          APIkey: data.accessKey,
+          secretKey: data.secretKey
+        });
       })
       .catch(err => {
         console.error(err);
@@ -140,4 +144,5 @@ router.post("/connect", async ctx => {
 //   console.log(cookies.get("ShopifyURL"));
 //   return ShopifyURL;
 // });
+
 module.exports = [router];

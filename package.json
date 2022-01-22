@@ -18,7 +18,7 @@
     "koa-session": "5.12.0",
     "koa-view": "2.1.3",
     "mongomock": "0.1.2",
-    "nanoid": "2.0.3",
+    "nanoid": "3.1.31",
     "request": "2.88.0",
     "request-promise-native": "1.0.7",
     "tmp-promise": "2.0.2"
